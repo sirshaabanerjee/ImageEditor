@@ -4,11 +4,11 @@ package com.banerjee.sirsha.imageeditor.activity;
  * Created by indianic on 17/1/18.
  */
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -50,11 +50,11 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * @return true if new Fragment added successfully into container, false otherwise
      * @throws IllegalStateException Exception if Fragment transaction is invalid
      */
-    public boolean addFragment(final int fragmentContainerResourceId, final Fragment currentFragment, final Fragment nextFragment,  final boolean commitAllowingStateLoss) throws IllegalStateException {
+    public boolean addFragment(final int fragmentContainerResourceId, final Fragment currentFragment, final Fragment nextFragment, final boolean commitAllowingStateLoss) throws IllegalStateException {
         if (currentFragment == null || nextFragment == null) {
             return false;
         }
-        final FragmentManager fragmentManager = getFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.add(fragmentContainerResourceId, nextFragment, nextFragment.getClass().getSimpleName());

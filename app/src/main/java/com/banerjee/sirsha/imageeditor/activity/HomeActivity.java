@@ -22,7 +22,7 @@ import com.banerjee.sirsha.imageeditor.util.Utils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
-public class HomeActivity extends BaseActivity{
+public class HomeActivity extends BaseActivity {
 
     private Button btnTakePhoto;
     private Button btnSelectFromGallery;
@@ -30,7 +30,7 @@ public class HomeActivity extends BaseActivity{
     private File imageFile;
     private boolean isCamera; // boolean determines what intent user is trying to open camera or gallery
 
-    private PermissionUtils permissionUtils;
+    private Uri imageUri;
 
     @Override
     protected int defineLayoutResource() {
@@ -45,25 +45,6 @@ public class HomeActivity extends BaseActivity{
         btnTakePhoto.setOnClickListener(this);
         btnSelectFromGallery.setOnClickListener(this);
 
-        permissionUtils = new PermissionUtils(HomeActivity.this);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        switch (requestCode) {
-            case Constants.PERMISSION_REQUEST_ACCESS_CAMERA_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                        if(isCamera)
-                            cameraIntent();
-                        else
-                            galleryIntent();
-                } else {
-                    Toast.makeText(this, "Permission is necessary to proceed further", Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
     }
 
     /**
@@ -87,20 +68,43 @@ public class HomeActivity extends BaseActivity{
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case Constants.PERMISSION_REQUEST_ACCESS_CAMERA_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        ) {
+                    if (isCamera)
+                        cameraIntent();
+                    else
+                        galleryIntent();
+                } else {
+                    Toast.makeText(this, "Please grant permissions", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Constants.REQUEST_CODE_GALLERY) {
                 imageFile = FileUtils.getFile(this, data.getData());
-//                Utils.setImageView(this, imageFile.getAbsolutePath(), ivProfileImage, R.drawable.ic_profile, true);
-
+                imageUri = FileUtils.getUri(imageFile);
+//                imageUri = Uri.parse(imageFile.getAbsolutePath());
             } else if (requestCode == Constants.REQUEST_CODE_CAMERA) {
 
                 onCaptureImageResult(data);
 
             }
         }
+
+        // move to next page
+        final Intent intent = new Intent(HomeActivity.this, PhotoActivity.class);
+        intent.putExtra(Constants.BUNDLE_IMAGE_URI, String.valueOf(imageUri));
+        startActivity(intent);
     }
 
     /**
@@ -117,9 +121,8 @@ public class HomeActivity extends BaseActivity{
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
         }
         imageFile = Utils.createDirectoryAndSaveFile(thumbnail, getString(R.string.app_name), this);
-        Uri uri = null;
         if (imageFile != null) {
-            uri = Uri.fromFile(imageFile);
+            imageUri = Uri.fromFile(imageFile);
         }
 //        Utils.setImageView(this, uri.toString(), ivProfileImage, R.drawable.ic_profile, true);
     }
@@ -128,22 +131,22 @@ public class HomeActivity extends BaseActivity{
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        switch (view.getId()){
+        switch (view.getId()) {
 
             case R.id.activity_home_btnTakePhoto:
                 isCamera = true;
-                if (permissionUtils.getCameraPermission()) {
+                if (PermissionUtils.checkPermission(this)) {
                     cameraIntent();
                 }
                 break;
             case R.id.activity_home_btnSelectFromGallery:
                 isCamera = false;
-                if (permissionUtils.getCameraPermission()) {
-                    cameraIntent();
+                if (PermissionUtils.checkPermission(this)) {
+                    galleryIntent();
                 }
                 break;
-                default:
-                    break;
+            default:
+                break;
 
         }
     }

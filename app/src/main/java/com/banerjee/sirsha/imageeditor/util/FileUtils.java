@@ -15,19 +15,28 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
+
+import com.developers.imagezipper.ImageZipper;
+
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Comparator;
+
+import me.echodev.resizer.Resizer;
 
 /**
  * Created by Sirsha Banerjee on 18/1/18.
  */
 
 public class FileUtils {
-    private FileUtils() {} //private constructor to enforce Singleton pattern
+    private FileUtils() {
+    } //private constructor to enforce Singleton pattern
 
-    /** TAG for log messages. */
+    /**
+     * TAG for log messages.
+     */
     static final String TAG = "FileUtils";
     private static final boolean DEBUG = false; // Set to true to enable logging
 
@@ -44,7 +53,7 @@ public class FileUtils {
      *
      * @param uri
      * @return Extension including the dot("."); "" if there is no extension;
-     *         null if uri was null.
+     * null if uri was null.
      */
     public static String getExtension(String uri) {
         if (uri == null) {
@@ -187,9 +196,9 @@ public class FileUtils {
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @param selection (Optional) Filter used in the query.
+     * @param context       The context.
+     * @param uri           The Uri to query.
+     * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      * @author paulburke
@@ -229,10 +238,10 @@ public class FileUtils {
      * represents a local file.
      *
      * @param context The context.
-     * @param uri The Uri to query.
+     * @param uri     The Uri to query.
+     * @author paulburke
      * @see #isLocal(String)
      * @see #getFile(Context, Uri)
-     * @author paulburke
      */
     public static String getPath(final Context context, final Uri uri) {
 
@@ -294,7 +303,7 @@ public class FileUtils {
                 }
 
                 final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
+                final String[] selectionArgs = new String[]{
                         split[1]
                 };
 
@@ -322,9 +331,9 @@ public class FileUtils {
      * Convert Uri into File, if possible.
      *
      * @return file A local file that the Uri was pointing to, or null if the
-     *         Uri is unsupported or pointed to a remote resource.
-     * @see #getPath(Context, Uri)
+     * Uri is unsupported or pointed to a remote resource.
      * @author paulburke
+     * @see #getPath(Context, Uri)
      */
     public static File getFile(Context context, Uri uri) {
         if (uri != null) {
@@ -429,8 +438,7 @@ public class FileUtils {
                                 id,
                                 MediaStore.Video.Thumbnails.MINI_KIND,
                                 null);
-                    }
-                    else if (mimeType.contains(FileUtils.MIME_TYPE_IMAGE)) {
+                    } else if (mimeType.contains(FileUtils.MIME_TYPE_IMAGE)) {
                         bm = MediaStore.Images.Thumbnails.getThumbnail(
                                 resolver,
                                 id,
@@ -506,5 +514,55 @@ public class FileUtils {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         return intent;
     }
+
+//    public static Bitmap getBitmap(Uri uri, Context context) throws FileNotFoundException, IOException {
+//        InputStream input = context.getContentResolver().openInputStream(uri);
+//
+//        BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
+//        onlyBoundsOptions.inJustDecodeBounds = true;
+//        onlyBoundsOptions.inDither=true;//optional
+//        onlyBoundsOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+//        BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+//        input.close();
+//        if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1))
+//            return null;
+//
+//        int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
+//
+//        double ratio = (originalSize > 80) ? (originalSize / 80) : 1.0;
+//
+//        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+//        bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
+//        bitmapOptions.inDither=true;//optional
+//        bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+//        input = context.getContentResolver().openInputStream(uri);
+//        Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+//        input.close();
+//        return bitmap;
+//    }
+//
+//    private static int getPowerOfTwoForSampleRatio(double ratio){
+//        int k = Integer.highestOneBit((int)Math.floor(ratio));
+//        if(k==0) return 1;
+//        else return k;
+//    }
+
+    public static Bitmap getBitmapFromUri(Context context, Uri imageUri, final int targetLength) {
+        Bitmap bitmap = null;
+        try {
+//            final Bitmap unCompressedBitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+            final File actualFile = new File(imageUri.getPath());
+            File resizedFile = new ImageZipper(context).compressToFile(actualFile);
+            bitmap = new Resizer(context)
+                    .setTargetLength(targetLength)
+                    .setSourceImage(resizedFile)
+                    .getResizedBitmap();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
 
 }

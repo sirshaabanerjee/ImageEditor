@@ -1,8 +1,8 @@
 package com.banerjee.sirsha.imageeditor.fragment;
 
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +75,7 @@ public abstract class BaseFragment extends Fragment  {
      * @throws ClassCastException    Throws exception if getActivity() is not an instance of BaseActivity
      * @throws IllegalStateException Exception if Fragment transaction is invalid
      */
-    protected boolean addFragment(final int container, final android.app.Fragment currentFragment, final android.app.Fragment nextFragment, final boolean requiredAnimation, final boolean commitAllowingStateLoss) throws ClassCastException, IllegalStateException {
+    protected boolean addFragment(final int container, final Fragment currentFragment, final Fragment nextFragment, final boolean requiredAnimation, final boolean commitAllowingStateLoss) throws ClassCastException, IllegalStateException {
         if (getActivity() != null) {
             if (getActivity() instanceof BaseActivity) {
                 return ((BaseActivity) getActivity()).addFragment(container, currentFragment, nextFragment,  commitAllowingStateLoss);
@@ -92,13 +92,12 @@ public abstract class BaseFragment extends Fragment  {
      * @param container               Resource id of the layout in which Fragment will be added
      * @param fragmentManager         Activity fragment manager
      * @param nextFragment            New Fragment to be loaded into container
-     * @param requiredAnimation       true if screen transition animation is required
      * @param commitAllowingStateLoss true if commitAllowingStateLoss is needed
      * @return true if new Fragment added successfully into container, false otherwise
      * @throws ClassCastException    Throws exception if getActivity() is not an instance of BaseActivity
      * @throws IllegalStateException Exception if Fragment transaction is invalid
      */
-    protected boolean replaceFragment(final int container, final FragmentManager fragmentManager, final android.app.Fragment nextFragment, final boolean requiredAnimation, final boolean commitAllowingStateLoss) throws ClassCastException, IllegalStateException {
+    protected boolean replaceFragment(final int container, final FragmentManager fragmentManager, final Fragment nextFragment, final boolean commitAllowingStateLoss) throws ClassCastException, IllegalStateException {
         if (getActivity() != null) {
             if (getActivity() instanceof BaseActivity) {
                 return ((BaseActivity) getActivity()).replaceFragment(container, fragmentManager, nextFragment,  commitAllowingStateLoss);
