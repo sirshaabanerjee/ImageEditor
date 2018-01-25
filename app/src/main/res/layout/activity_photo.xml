@@ -12,13 +12,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="@string/label_save" />
+        android:text="@string/label_save"
+        android:visibility="gone"/>
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/activity_photo_alHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/header_photo" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/activity_photo_rvEditOptions"
-        android:layout_below="@id/activity_photo_btnSave"
+        android:layout_below="@id/activity_photo_alHeader"
         android:layout_centerHorizontal="true"
         android:gravity="center">
 

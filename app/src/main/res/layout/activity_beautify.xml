@@ -4,24 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.banerjee.sirsha.imageeditor.activity.EffectsActivity">
+    tools:context="com.banerjee.sirsha.imageeditor.activity.BeautifyActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/activity_effects_alHeader"
+        android:id="@+id/activity_beautify_alHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <include layout="@layout/header_photo" />
-
     </android.support.design.widget.AppBarLayout>
 
     <ImageView
         android:contentDescription="@null"
-        android:id="@+id/activity_effects_ivPreview"
+        android:id="@+id/activity_beautify_ivPreview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/activity_effects_rvFilterThumbnails"
-        android:layout_below="@id/activity_effects_alHeader" />
+        android:layout_below="@id/activity_beautify_alHeader" />
 
     <ProgressBar
         android:id="@+id/activity_effects_pbLoading"
@@ -32,10 +30,6 @@
         android:minHeight="@dimen/_50sdp"
         android:minWidth="@dimen/_50sdp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/activity_effects_rvFilterThumbnails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorHeader" />
+    
+
 </RelativeLayout>

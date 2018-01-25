@@ -93,7 +93,6 @@ public class HomeActivity extends BaseActivity {
             if (requestCode == Constants.REQUEST_CODE_GALLERY) {
                 imageFile = FileUtils.getFile(this, data.getData());
                 imageUri = FileUtils.getUri(imageFile);
-//                imageUri = Uri.parse(imageFile.getAbsolutePath());
             } else if (requestCode == Constants.REQUEST_CODE_CAMERA) {
 
                 onCaptureImageResult(data);

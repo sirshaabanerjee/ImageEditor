@@ -4,15 +4,14 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="@dimen/dimen_10dp">
 
     <TextView
         android:id="@+id/row_edit_option_thumbnail_tvEditOptionName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="fgdfgdg" />
+        style="@style/styleThumbnailTextView"/>
 
     <ImageView
+        android:layout_marginTop="@dimen/dimen_5dp"
         android:id="@+id/row_edit_option_thumbnail_ivEditOptionIcon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

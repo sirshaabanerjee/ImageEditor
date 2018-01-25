@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.banerjee.sirsha.imageeditor.R;
 import com.bumptech.glide.Glide;
@@ -59,7 +60,7 @@ public class Utils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        Toast.makeText(context, "Image stored at "+file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
         return file;
     }
 

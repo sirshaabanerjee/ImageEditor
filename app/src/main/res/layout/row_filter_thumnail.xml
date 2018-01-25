@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/row_filter_thumbnail_llParent"
     android:layout_width="100dp"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp"
     android:gravity="center"
-    android:id="@+id/row_filter_thumbnail_llParent">
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_10dp">
 
     <TextView
-        android:layout_gravity="center"
         android:id="@+id/row_filter_thumbnail_tvFilterName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/styleThumbnailTextView"
         android:text="thumbnail" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/row_filter_thumbnail_ivFilter"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:contentDescription="@null" />
+        android:layout_width="@dimen/dimen_60dp"
+        android:layout_height="@dimen/dimen_60dp"
+        android:contentDescription="@null"
+        app:civ_border_color="@color/colorThumbBackground"
+        app:civ_border_width="@dimen/dimen_2dp" />
 
 </LinearLayout>
